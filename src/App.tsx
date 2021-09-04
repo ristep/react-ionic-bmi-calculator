@@ -1,11 +1,7 @@
+import React from 'react';
 import { IonApp, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonSplitPane, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactHashRouter as IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, useLocation, Switch } from 'react-router-dom';
-
-import Home from './pages/Home';
-import About from './pages/About';
-import Login from './pages/Login';
-import Favorites from './pages/Favorites';
 
 import Menu from './components/Menu';
 
@@ -29,6 +25,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { appPages } from './appPages';
 
 const Location = () => {
   const location = useLocation();
@@ -66,18 +63,11 @@ const App: React.FC = () => {
                     <Route exact path="/">
                       <Redirect to="/Home" />
                     </Route>
-                    <Route path="/Home" exact={true}>
-                      <Home />
-                    </Route>
-                    <Route path="/About" exact={true}>
-                      <About />
-                    </Route>
-                    <Route path="/Login" exact={true}>
-                      <Login />
-                    </Route>
-                    <Route path="/Favorites" exact={true}>
-                      <Favorites />
-                    </Route>
+                   { appPages.map( (page, index ) => (
+                      <Route key={index} path={page.url}>
+                        {page.component} 
+                      </Route>
+                    ))}
                   </Switch>
                 </div>
 

@@ -23,7 +23,7 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main-cont" type="overlay">
       <IonContent>
 
-        <IonList id="inbox-list">
+        <IonList id="menu-list">
           <IonListHeader>BMI - calculator</IonListHeader>
           <IonNote>ristepan@gmail.com</IonNote>
           {appPages.map((appPage, index) => {
