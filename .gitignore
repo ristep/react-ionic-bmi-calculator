@@ -27,3 +27,7 @@ styles/.sass-cache/*
 styles/.sass-cache
 .sass-cache/
 *.css.map
+# Optional eslint cache
+.eslintcache
+./node_modules
+
