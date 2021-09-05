@@ -8,30 +8,41 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  useIonRouter
 } from '@ionic/react';
-
 import { useLocation } from 'react-router-dom';
-import { bookmarkOutline } from 'ionicons/icons';
 
-import { appPages } from '../appPages';
+import { pagesArray } from '../pages/pagesArray';
 import './Menu.css';
+
+import { App } from '@capacitor/app';
 
 const Menu: React.FC = () => {
   const location = useLocation();
 
+  const ionRouter = useIonRouter();
+    document.addEventListener('ionBackButton', (ev) => {
+    ev.detail.register(-1, () => {
+      if (!ionRouter.canGoBack()) {
+        if( window.confirm('Are you sure you want to exit?'))
+          App.exitApp();   
+     }
+    });
+  });
+
   return (
-    <IonMenu contentId="main-cont" type="overlay">
+    <IonMenu className="main-menu" contentId="main-cont" type="overlay">
       <IonContent>
 
         <IonList id="menu-list">
           <IonListHeader>BMI - calculator</IonListHeader>
           <IonNote>ristepan@gmail.com</IonNote>
-          {appPages.map((appPage, index) => {
+          {pagesArray.map((page, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
+                <IonItem className={location.pathname === page.url ? 'selected' : ''} routerLink={page.url} routerDirection="none" lines="none" detail={false}>
+                  <IonIcon slot="start" ios={page.iosIcon} md={page.mdIcon} />
+                  <IonLabel>{page.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );

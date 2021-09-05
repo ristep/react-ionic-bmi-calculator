@@ -5,8 +5,6 @@ import { Redirect, Route, useLocation, Switch } from 'react-router-dom';
 
 import Menu from './components/Menu';
 
-import './pages/styles.css';
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -25,16 +23,20 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { appPages } from './appPages';
+import './App.css';
+
+
+import { pagesArray } from './pages/pagesArray';
 
 const Location = () => {
   const location = useLocation();
+  console.log(location);
   return (
     <div>{location.pathname}</div>
   );
 }
 
-const App: React.FC = () => {
+const ReactApp: React.FC = () => {
   return (
     <IonApp>
       <IonSplitPane contentId="main-cont">
@@ -42,7 +44,7 @@ const App: React.FC = () => {
 
           <Menu />
 
-          <IonRouterOutlet  id="main-cont">
+          <IonRouterOutlet id="main-cont">
             <IonPage>
 
               <IonHeader>
@@ -63,9 +65,9 @@ const App: React.FC = () => {
                     <Route exact path="/">
                       <Redirect to="/Home" />
                     </Route>
-                   { appPages.map( (page, index ) => (
+                    {pagesArray.map((page, index) => (
                       <Route key={index} path={page.url}>
-                        {page.component} 
+                        {page.component}
                       </Route>
                     ))}
                   </Switch>
@@ -77,9 +79,10 @@ const App: React.FC = () => {
           </IonRouterOutlet>
 
         </IonReactRouter>
+
       </IonSplitPane>
     </IonApp>
   );
 };
 
-export default App;
+export default ReactApp;
