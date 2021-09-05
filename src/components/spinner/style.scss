@@ -1,0 +1,29 @@
+$radius: 48px;
+
+.spinner {
+  z-index: 10000;
+  position: fixed;
+  margin: auto;
+  top: 50%;
+  left: 50%;
+
+  box-sizing: content-box;
+  height: $radius;
+  width: $radius;
+
+  animation: rotation .7s infinite linear;
+  border-left: 5px solid rgba(0, 174, 239, .15);
+  border-right: 5px solid rgba(0, 174, 239, .15);
+  border-bottom: 5px solid rgba(0, 174, 239, .15);
+  border-top: 5px solid rgba(0, 174, 239, .8);
+  border-radius: 100%;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
