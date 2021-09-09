@@ -3,10 +3,26 @@ import ReactDOM from 'react-dom';
 import ReactApp from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // refetchInactive: false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReactApp />
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactApp />
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

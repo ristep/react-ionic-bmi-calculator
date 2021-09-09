@@ -5,7 +5,7 @@ export const Favorites: React.FC = () => {
   const { name } = useParams<{ name: string; }>();
 
   return (
-    <h1>Favo page</h1>
+    <h1>Favo page {name} </h1>
   );
 };
 

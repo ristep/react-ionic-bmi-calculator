@@ -1,7 +1,5 @@
 import React from "react";
-//import { Button, Card, Container, Form } from "react-bootstrap";
-import { IonInput,  IonItem,  IonLabel,  IonCheckbox,  IonButton,  IonCard,  IonCardHeader,  IonCardTitle,  IonCardContent,  IonRow,  IonCol,} from "@ionic/react";
-
+import { Button, Card, Container, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Spinner from "components/spinner";
 import useValiHook from "../../hooks/formValidation";
@@ -74,19 +72,19 @@ const User = () => {
   const { onBlur,  errors } = useValiHook({ valSchema, formData });
 
   return (
-    <div id="UserCard">
+    <Container id="UserCard">
       {(isLoading || isFetching) && <Spinner />}
 
       {error && <div>{"An error has occurred: " + error.message}</div>}
 
       {isSuccess && !error && !(isLoading || isFetching) && (
-          <IonCard>
-            <IonCardHeader>  
-              <IonCardTitle>
+          <Card>
+            <Card.Title>
+              <h5>
                 User name: {formData?.id} - {formData?.name}
-              </IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
+              </h5>
+            </Card.Title>
+            <Card.Body>
               <Form 
                 onSubmit={submitChanges}
                 className="bg-light border row no-gutters"
@@ -185,7 +183,7 @@ const User = () => {
                   />
                 </Form.Group>
               </Form>
-            </IonCardContent>
+            </Card.Body>
 
             <Button size="sm" onClick={ () => window.history.back()}>Back</Button>
             {/* <Button size="sm" type="submit" variant="primary">
@@ -197,9 +195,9 @@ const User = () => {
             </Button> */}
 
             {/* <ReactJson name="errorList" src={errors} /> */}
-          </IonCard>
+          </Card>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -25,8 +25,8 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './App.css';
 
-
 import { pagesArray } from './pages/pagesArray';
+import { ProvideAuthData } from "./hooks/authData";
 
 const Location = () => {
   const location = useLocation();
@@ -39,6 +39,7 @@ const Location = () => {
 const ReactApp: React.FC = () => {
   return (
     <IonApp>
+     <ProvideAuthData>
       <IonSplitPane contentId="main-cont">
         <IonReactRouter>
 
@@ -58,9 +59,13 @@ const ReactApp: React.FC = () => {
                 </IonToolbar>
               </IonHeader>
 
-              <IonContent fullscreen>
+              <IonContent 
+                scrollEvents={true}
+                onIonScrollStart={() => {}}
+                onIonScroll={() => {}}
+                onIonScrollEnd={() => {}}
+              >
 
-                <div className="container" id="main-cont">
                   <Switch>
                     <Route exact path="/">
                       <Redirect to="/Home" />
@@ -71,7 +76,6 @@ const ReactApp: React.FC = () => {
                       </Route>
                     ))}
                   </Switch>
-                </div>
 
               </IonContent>
 
@@ -81,6 +85,7 @@ const ReactApp: React.FC = () => {
         </IonReactRouter>
 
       </IonSplitPane>
+      </ProvideAuthData>
     </IonApp>
   );
 };
