@@ -1,4 +1,4 @@
-import Axios from "Axios";
+import Axios from "../Axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const bmiGetHistoryQuery = (par) => {

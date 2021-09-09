@@ -1,21 +1,14 @@
-// import "./form.scss";
-import React, { useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Row,
-} from "react-bootstrap";
+import "../pages.scss";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import useValiHook from "../../hooks/formValidation";
 
 import * as yup from "yup";
 
-import "./index.scss";
-import { useAuthData } from "hooks/authData";
-import UserCard from "components/userCard.jsx";
+import { useAuthData } from "../../hooks/authData";
+import UserCard from "../../components/userCard.jsx";
+import { IonInput,  IonItem,  IonLabel,  IonCheckbox,  IonButton,  IonCard,  IonCardHeader,  IonCardTitle,  IonCardContent,  IonRow,  IonCol,} from "@ionic/react";
+import { useQueryClient } from "react-query";
 
 let valSchema = yup.object().shape({
   username: yup.string().required(),
@@ -23,106 +16,90 @@ let valSchema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const [ formData, setFormData ] = useState({ username: "", password: "" });
+
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const { onBlur, errors } = useValiHook({ valSchema, formData });
   const { authData, getKey, clearKey } = useAuthData();
   const history = useHistory();
+
+  //const queryClient = useQueryClient();
+  
+  const logOutHandle = () => {
+    // window.location.reload();
+    history.go(0)
+    clearKey();
+  };
 
   const onChange = (ev) => {
     setFormData({ ...formData, [ev.target.name]: ev.target.value });
   };
 
   return (
-    <>
+    <div id="login-box">
       {!authData.OK && (
-        <Container id="login-box">
-          <Card>
-            <Card.Title>
-              <Row>
-                <Col className="md-12">
-                  <div id="login-box-title">User login</div>
-                </Col>
-              </Row>
-            </Card.Title>
-            <Card.Body>
-              <Form className="p-2 bg-light" size="sm" autocomplete="off">
-                <Form.Group>
-                  <Form.Label>User name:</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    id="username"
-                    name="username"
-                    type="text"
-                    placeholder="User name"
-                    value={formData?.username}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    className={errors?.username ? "is-invalid" : ""}
-                  />
-                  <Form.Label className="invalid-feedback">
-                    {errors?.username}
-                  </Form.Label>
-                </Form.Group>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>
+              <div id="login-box-title">User login</div>
+            </IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonItem>
+              <IonLabel position="floating">Username</IonLabel>
+              <IonInput
+                size="sm"
+                id="username"
+                name="username"
+                type="text"
+                value={formData?.username}
+                onIonChange={onChange}
+                className={errors?.username ? "is-invalid" : ""}
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="floating">Password</IonLabel>
+              <IonInput
+                size="sm"
+                id="password"
+                name="password"
+                type="password"
+                value={formData?.password || ""}
+                onIonChange={onChange}
+                onBlur={onBlur}
+                className={errors?.password ? "is-invalid" : ""}
+              />
+            </IonItem>
+            <IonItem lines="none">
+              <IonLabel>Remember me</IonLabel>
+              <IonCheckbox defaultChecked={true} slot="start" />
+            </IonItem>
+            {authData.error && (
+              <div className="alert alert-danger" role="alert">
+                {authData.message}
+              </div>
+            )}
+          </IonCardContent>
 
-                <Form.Group>
-                  <Form.Label>Password:</Form.Label>
-                  <Form.Control
-                    size="sm"
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    value={formData?.password || ""}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    className={errors?.password ? "is-invalid" : ""}
-                  />
-                  <Form.Label className="invalid-feedback">
-                    {errors?.password}
-                  </Form.Label>
-                </Form.Group>
-              </Form>
-              {authData.error && (
-                <div className="alert alert-danger" role="alert">
-                  {authData.message}
-                </div>
-              )}
-            </Card.Body>
-
-            <Card.Footer>
-              <Row>
-                <Col className="md-4"></Col>
-                <Col className="md-4">
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    onClick={(ev) => getKey(ev, formData)}
-                    id="submitButton"
-                  >
-                    LOGIN
-                  </Button>
-                </Col>
-                <Col className="md-4">
-                <Button
-                    variant="standard"
-                    onClick={() =>  history.push("/register")}
-                    id="registerUser"
-                  >
-                    NEW USER
-                </Button>
-
-                </Col>
-              </Row>
-            </Card.Footer>
-          </Card>
-        </Container>
+          <IonRow>
+            <IonCol>
+              <IonButton id="submitButton" onClick={(ev) => getKey(ev, formData)}>
+                Login
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton id="registerButton" color="secondary" onClick={() => history.push("/register")}>
+                Register
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonCard>
       )}
       {authData.OK && (
-        <Container id="login-box">
-          <UserCard userID={authData.data.id} logout={clearKey} />
-        </Container>
+        <div id="login-box">
+          <UserCard userID={authData.data.id} logout={logOutHandle} />
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

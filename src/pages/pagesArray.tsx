@@ -1,9 +1,9 @@
 
 import { heartOutline, heartSharp, homeOutline, homeSharp, informationOutline, informationSharp, logInOutline, logInSharp } from 'ionicons/icons';
-import About from './About';
+import About from './about';
 import Favorites from './Favorites';
-import Home from './Home';
-import Login from './Login';
+import Home from './home';
+import LoginForm from './loginForm';
 
 interface AppPage {
   url: string;
@@ -40,6 +40,6 @@ export const pagesArray: AppPage[] = [
     url: '/Login',
     iosIcon: logInOutline,
     mdIcon: logInSharp,
-    component: <Login />
+    component: <LoginForm />
   }
 ];

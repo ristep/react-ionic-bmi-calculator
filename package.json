@@ -9,26 +9,32 @@
     "@capacitor/haptics": "1.0.3",
     "@capacitor/keyboard": "1.0.3",
     "@capacitor/status-bar": "1.0.3",
-    "@ionic/react": "^5.5.0",
-    "@ionic/react-router": "^5.5.0",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^12.19.15",
-    "@types/react": "^16.14.3",
-    "@types/react-dom": "^16.9.10",
-    "@types/react-router": "^5.1.11",
-    "@types/react-router-dom": "^5.1.7",
-    "axios": "^0.21.3",
-    "cordova": "^10.0.0",
-    "cordova-res": "^0.15.3",
+    "@ionic/react": "^5.7.0",
+    "@ionic/react-router": "^5.7.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.11",
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router": "^5.1.16",
+    "@types/react-router-dom": "^5.1.8",
+    "axios": "^0.21.4",
+    "axis": "^1.0.0",
+    "formik": "^2.2.9",
     "ionicons": "^5.5.3",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-day-picker": "^7.4.10",
     "react-dom": "^17.0.2",
+    "react-json-view": "^1.21.3",
+    "react-query": "^3.21.1",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-table": "^7.7.0",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
     "workbox-background-sync": "^6.2.4",
@@ -42,7 +48,8 @@
     "workbox-range-requests": "^6.2.4",
     "workbox-routing": "^6.2.4",
     "workbox-strategies": "^6.2.4",
-    "workbox-streams": "^6.2.4"
+    "workbox-streams": "^6.2.4",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -59,7 +66,7 @@
   "browserslist": {
     "production": [
       ">0.2%",
-      "not dead",
+      "not dead", 
       "not op_mini all"
     ],
     "development": [
@@ -69,7 +76,9 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "^3.2.2"
+    "@capacitor/cli": "3.2.2",
+    "node-sass": "^6.0.1"
   },
   "description": "An Ionic project"
 }
+
