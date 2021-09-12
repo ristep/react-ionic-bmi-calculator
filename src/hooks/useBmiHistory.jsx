@@ -8,7 +8,7 @@ const bmiGetHistoryQuery = (par) => {
       key: {
         user_id: par,
       },
-      sort:[ "ms_date DESC", "ms_time DESC" ],
+      sort:[ "ms_date_time DESC" ],
       attributes: [
         "id",
         "user_id",
@@ -17,15 +17,14 @@ const bmiGetHistoryQuery = (par) => {
         "height",
         "weight",
         "bmic",
-        "ms_date",
-        "ms_time"
+        "ms_date_time"
       ],
     },
   };
 };
 
 const bmiAddHistoryQuery = (prm) => {
-  const { user_id, age, gender, weight, height, ms_date, ms_time } = prm;
+  const { user_id, age, gender, weight, height, ms_date_time } = prm;
   return {
     Create: {
       type: "bmi_log",
@@ -35,8 +34,7 @@ const bmiAddHistoryQuery = (prm) => {
         gender,
         weight,
         height,
-        ms_date,
-        ms_time
+        ms_date_time
       },
     },
   };

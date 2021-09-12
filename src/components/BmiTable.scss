@@ -1,0 +1,49 @@
+table.bmiTable {
+  // font-family: "Times New Roman", Times, serif;
+  border: 1px solid var( --ion-color-medium-contrast, --ion-color-dark-contrast, #ffffff);
+  width: 100%;
+  height: 200px;
+  text-align: center;
+  border-collapse: collapse;
+
+  td,
+  table.bmiTable th {
+    border: 1px solid var( --ion-color-medium-contrast, --ion-color-dark-contrast, #ffffff);
+    padding: 3px 2px;
+  }
+
+  tbody td {
+    font-size: 14px;
+  }
+  tr:nth-child(even) {
+    background: var(--ion-color-light-tint, #d0e4f5);
+  }
+
+  thead {
+    height: 1.2em;
+    background: var(--ion-color-primary, #3aa2fd);
+    border-bottom: 5px solid var( --ion-color-medium-contrast, --ion-color-dark-contrast, #ffffff);
+    //background: linear-gradient(to bottom, var(--ion-color-medium-contrast 0%), var(--ion-color-medium-contrast 66%), var(--ion-color-medium-contrast 100%));
+  }
+  thead th {
+    font-size: 17px;
+    font-weight: bold;
+    color: var( --ion-color-medium-contrast, --ion-color-dark-contrast, #ffffff);
+    text-align: center;
+    border-left: 2px solid var( --ion-color-medium-contrast, --ion-color-dark-contrast, #ffffff);
+  }
+  thead th:first-child {
+    border-left: none;
+  }
+
+  tfoot {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--ion-color-dark-shade, #333333);
+    background: var(--ion-color-light-tint, #d0e4f5);
+    border-top: 3px solid var( --ion-color-dark, #444444);
+  }
+  tfoot td {
+    font-size: 14px;
+  }
+}

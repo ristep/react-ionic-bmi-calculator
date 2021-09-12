@@ -66,7 +66,7 @@
   "browserslist": {
     "production": [
       ">0.2%",
-      "not dead", 
+      "not dead",
       "not op_mini all"
     ],
     "development": [
@@ -81,4 +81,3 @@
   },
   "description": "An Ionic project"
 }
-

@@ -12,8 +12,8 @@ import {
   IonCol,
 } from "@ionic/react";
 import Spinner from "components/spinner";
-import useValiHook from "../../hooks/formValidation";
-import useDataModule from "../../hooks/formdata";
+import useValiHook from "../hooks/formValidation";
+import useDataModule from "../hooks/formdata";
 import * as yup from "yup";
 
 const InputArray = [

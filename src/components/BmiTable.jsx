@@ -1,3 +1,5 @@
+import "./BmiTable.scss";
+
 import React from 'react'
 import Spinner from 'components/spinner'
 import { useAuthData } from 'hooks/authData'
@@ -5,6 +7,7 @@ import { useBmiHistory } from 'hooks/useBmiHistory'
 import { Table, Button } from 'react-bootstrap'
 import { useTable } from 'react-table'
 import { usePsAlert } from 'hooks/usePsAlert'
+
 
 const Tabela = ({ columns, data, rowClick }) => {
    const {
@@ -40,7 +43,7 @@ const Tabela = ({ columns, data, rowClick }) => {
          <DelAlert.Tag />
 
          {(isRemoving) && <Spinner />}
-         <Table striped hover size="sm"  {...getTableProps()}>
+         <Table className="bmiTable" striped hover size="sm"  {...getTableProps()}>
             <thead>
                {headerGroups.map(headerGroup => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
@@ -93,11 +96,7 @@ const BmiTable = (props) => {
          },
          {
             Header: 'Date',
-            accessor: 'ms_date',
-         },
-         {
-            Header: 'Hour',
-            accessor: 'ms_time',
+            accessor: 'ms_date_time',
          },
          {
             Header: 'Delete',

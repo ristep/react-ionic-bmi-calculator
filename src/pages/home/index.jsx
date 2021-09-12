@@ -1,288 +1,347 @@
+import "../pages.scss";
 import React, { useState, useEffect } from "react";
-import { useFormik } from "formik";
+import { FormikConsumer, useFormik } from "formik";
+import  moment  from "moment";
 import * as yup from "yup";
-import { Button, Col,  Container,  Form,   Row,   Badge,   InputGroup,} from "react-bootstrap";
+import {
+  IonItem,
+  IonLabel,
+  IonButton,
+  IonCard,
+  IonRow,
+  IonCol,
+  IonDatetime,
+  IonSelect,
+  IonBadge,
+  IonSelectOption,
+  IonRange,
+  IonIcon,
+} from "@ionic/react";
+
 import { useBmiHistory } from "hooks/useBmiHistory";
 import { useAuthData } from "hooks/authData";
-import BmiTable from "components/bmiTable";
+import BmiTable from "components/BmiTable";
 import Spinner from "components/spinner";
-import usePsClockPicker from "hooks/useClockPicker";
-import usePsCalendar from "hooks/useCalendar";
+import { barbellOutline, calendarOutline, manOutline } from "ionicons/icons";
+
+const tsFormat = "YYYY-MM-DD HH:00";
 
 const initialValues = {
-   age: "None",
-   gender: "Other",
-   weight: 90,
-   height: 1.75,
-   BMI: 0
+  age: "None",
+  gender: "Other",
+  weight: 90,
+  height: 1.75,
+  BMI: 0,
 };
 
 const bmiRanges = [
-   { from: 0, to: 12, color: "black", message: "Extremely underweight" },
-   { from: 12, to: 18.5, color: "#00BFCA", message: "Underweight" },
-   { from: 18.5, to: 25, color: "#2FBE02", message: "Normal weight" },
-   { from: 25, to: 30, color: "#B78600", message: "Overweight" },
-   { from: 30, to: 35, color: "#BA4B03", message: "Obese Class I" },
-   { from: 35, to: 40, color: "#FF1700", message: "Obese Class II" },
-   { from: 40, to: 45, color: "#700f1c", message: "Obese Class III" },
-   { from: 45, to: 500, color: "black", message: "Extremely obese" },
+  { from: 0, to: 12, color: "black", message: "Extremely underweight" },
+  { from: 12, to: 18.5, color: "#00BFCA", message: "Underweight" },
+  { from: 18.5, to: 25, color: "#2FBE02", message: "Normal weight" },
+  { from: 25, to: 30, color: "#B78600", message: "Overweight" },
+  { from: 30, to: 35, color: "#BA4B03", message: "Obese Class I" },
+  { from: 35, to: 40, color: "#FF1700", message: "Obese Class II" },
+  { from: 40, to: 45, color: "#700f1c", message: "Obese Class III" },
+  { from: 45, to: 500, color: "black", message: "Extremely obese" },
 ];
 
 const genderCor = (gender) => {
-   var ret = 0.0;
-   switch (gender) {
-      case "Male":
-         ret = 0.0;
-         break;
-      case "Female":
-         ret = 1.0;
-         break;
-      case "Other":
-      case "":
-         ret = 0.5;
-         break;
-      default:
-         ret = 0.0;
-   }
-   return ret;
+  var ret = 0.0;
+  switch (gender) {
+    case "Male":
+      ret = 0.0;
+      break;
+    case "Female":
+      ret = 1.0;
+      break;
+    case "Other":
+    case "":
+      ret = 0.5;
+      break;
+    default:
+      ret = 0.0;
+  }
+  return ret;
 };
 
 const ageCorTable = {
-   "None": -0.0,
-   "19-24": -0.0,
-   "25-34": -1.0,
-   "35-44": -2.0,
-   "45-54": -3.0,
-   "55-64": -4.0,
-   "65-120": -5.0,
+  None: -0.0,
+  "19-24": -0.0,
+  "25-34": -1.0,
+  "35-44": -2.0,
+  "45-54": -3.0,
+  "55-64": -4.0,
+  "65-120": -5.0,
 };
 
 const ageCor = (age) => {
-   return Number(ageCorTable[age]);
+  return Number(ageCorTable[age]);
 };
 
 const bmiDescription = (bmi) => {
-   var ret = {};
-   bmiRanges.every((range) => {
-      if (bmi >= range.from && bmi < range.to) {
-         ret = { color: range.color, message: range.message };
-         return false;
-      }
-      return true;
-   });
-   return ret;
+  var ret = {};
+  bmiRanges.every((range) => {
+    if (bmi >= range.from && bmi < range.to) {
+      ret = { color: range.color, message: range.message };
+      return false;
+    }
+    return true;
+  });
+  return ret;
 };
 
 const schema = yup.object().shape({
-   age: yup.number().min(2).max(150).required(),
-   gender: yup.string().oneOf(["Male", "Female", "Other"]),
-   weight: yup.number().min(25).max(250).required(),
-   height: yup.number().min(0.6).max(2.3).required(),
-   ms_date: yup.date().required(),
-   ms_time: yup.string().required()
+  age: yup.number().min(2).max(150).required(),
+  gender: yup.string().oneOf(["Male", "Female", "Other"]),
+  weight: yup.number().min(25).max(250).required(),
+  height: yup.number().min(0.6).max(2.3).required(),
+  ms_date_time: yup.date().required(),
 });
 
-function Forma() {
-   const { authData } = useAuthData();
-   const [data, setData] = useState(initialValues);
-   const { data: bmiData, addBmiHistory, isAdding, isLoading } = useBmiHistory({ userID: authData.data.id });
-   const PsClock = usePsClockPicker();
-   const PsCalendar = usePsCalendar();
-   // const [startDate, setStartDate] = useState(new Date());
-   // const [isOpen, setIsOpen] = useState(false);
+function Home() {
+  const { authData } = useAuthData();
+  const [data, setData] = useState(initialValues);
+  const {
+    data: bmiData,
+    addBmiHistory,
+    isAdding,
+    isLoading,
+  } = useBmiHistory({ userID: authData.data.id });
 
-   // const handleChange = (e) => {
-   //    setIsOpen(!isOpen);
-   //    setStartDate(e);
-   // };
+  const formik = useFormik({
+    validationSchema: schema,
+    initialValues,
+    onSubmit: (values) => {
+      values.preventdefaults();
+    },
+  });
 
-   // const handleClick = (e) => {
-   //    e.preventDefault();
-   //    setIsOpen(!isOpen);
-   // };
+  const addBmi = () => {
+    console.log({ user_id: authData.data.id, ...data }  );  // eslint-disable-line
+    addBmiHistory({ user_id: authData.data.id, ...data });
+  };
 
-   const formik = useFormik({ validationSchema: schema, initialValues, onSubmit: (values) => { values.preventdefaults(); } });
+  useEffect(() => {
+    const bmi = formik.values.weight / Math.pow(formik.values.height, 2);
+    const { color, message } = bmiDescription(
+      bmi + ageCor(formik.values.age) + genderCor(formik.values.gender)
+    );
+    setData({
+      ...formik.values,
+      BMI: bmi.toFixed(2),
+      bmiColor: color,
+      bmiMessage: message,
+    });
+  }, [formik.values]);
 
-   const addBmi = () => {
-      addBmiHistory({ user_id: authData.data.id, ...data });
-   };
+  const rowClick = (row) => {
+    formik.setValues({ user_id: authData.data.id, ...row });
+  };
 
-   useEffect(() => {
-      const bmi = (formik.values.weight / Math.pow(formik.values.height, 2));
-      const { color, message } = bmiDescription(bmi + ageCor(formik.values.age) + genderCor(formik.values.gender));
-      setData({ ...formik.values, BMI: bmi.toFixed(2), bmiColor: color, bmiMessage: message, });
-   }, [formik.values]);
+  const addHeight = (i) => {
+    formik.setFieldValue("height", formik.values.height + i);
+  };
 
-   const rowClick = (row) => {
-      formik.setValues({ user_id: authData.data.id, ...row });
-   }
-   
-   useEffect(() => {
-      formik.handleChange({ target: { name: "ms_time", value: PsClock.time } });
-      // eslint-disable-next-line
-   }, [PsClock.time]);
+  const incWeight = () => {
+    formik.setFieldValue("weight", formik.values.weight + 0.1);
+  };
 
-   useEffect(() => {
-      formik.handleChange({ target: { name: "ms_date", value: PsCalendar.date } });
-      // eslint-disable-next-line
-   }, [PsCalendar.date]);
+  const decWeight = () => {
+    formik.setFieldValue("weight", formik.values.weight - 0.1);
+  };
 
-   return (
-      <>
-         {(isLoading || isAdding) && <Spinner />}
-         
-         <PsClock.PsClockPicker />
-         <PsCalendar.PsCalendar />
+  const dateChangeHandler = (e) => {
+    formik.setFieldValue("ms_date_time", moment(e.target.value).format(tsFormat));
+  };
 
-         <Form noValidate onSubmit={formik.onSubmit} >
-            <Row className="p-2 border bg-light">
-               <Form.Group className="col-12 col-sm-3">
-                  <Form.Label>Date</Form.Label>
-                  <InputGroup className="mb-3">
-                     <Button variant="secondary" onClick={() => PsCalendar.setVisible(true)}>
-                        Chose Date
-                     </Button>
-                     <Form.Control
-                        dateFormat="YYYY-MM-DD"
-                        name="ms_date"
-                        value={formik.values.ms_date}
-                        onChange={formik.handleChange}
-                        isInvalid={!!formik.errors.ms_date}
-                     />
-                  </InputGroup>
-               </Form.Group>
-               <Form.Group className="col-12 col-sm-3" >
-                  <Form.Label>Hour</Form.Label>
-                  <InputGroup className="mb-3">
-                     <Button variant="secondary" onClick={() => PsClock.setVisible(true)}>
-                        Chose Hour
-                     </Button>
-                     <Form.Control
-                        timeFormat="hh:mm"
-                        name="ms_time"
-                        icon="clock"
-                        value={formik.values.ms_time}
-                        onChange={formik.handleChange}
-                        isInvalid={!!formik.errors.ms_time}
-                     />
-                  </InputGroup>
-               </Form.Group>
-               <Form.Group className="col-6 col-sm-3">
-                  <Form.Label>Gender</Form.Label>
-                  <Form.Select name="gender" onChange={formik.handleChange}>
-                     <option value="Male">Male</option>
-                     <option value="Female">Female</option>
-                     <option value="Other">Other</option>
-                  </Form.Select>
-               </Form.Group>
-               <Form.Group className="col-6 col-sm-3">
-                  <Form.Label>Age group</Form.Label>
-                  <Form.Select name="age" onChange={formik.handleChange}>
-                     <option value="None">None</option>
-                     <option value="19-24">19-24</option>
-                     <option value="25-34">25-34</option>
-                     <option value="35-44">35-44</option>
-                     <option value="45-54">45-54</option>
-                     <option value="55-64">55-64</option>
-                     <option value="65-120">65-120</option>
-                  </Form.Select>
-               </Form.Group>
-            </Row>
+  return (
+    <div id="home-card">
+      {(isLoading || isAdding) && <Spinner />}
 
-            <Row md={12} className="p-2 border bg-light">
-               <Form.Group as={Col} md="9">
-                  <Form.Label>Height</Form.Label>
-                  <Form.Control
-                     className="form-range"
-                     min="0.6"
-                     max="2.30"
-                     step="0.01"
-                     type="range"
-                     placeholder="Height"
-                     name="height"
-                     value={formik.values.height}
-                     onChange={formik.handleChange}
-                     isInvalid={!!formik.errors.height}
+      <IonCard>
+        <form>
+          <IonRow className="p-2 border bg-light">
+            <IonCol>
+              <IonItem>
+                <IonLabel color="tertiary" position="stacked">
+                  Gender
+                </IonLabel>
+                <IonSelect
+                  value={formik.values.gender}
+                  interface="popover"
+                  onIonChange={formik.handleChange}
+                >
+                  <IonSelectOption value="Male">Male</IonSelectOption>
+                  <IonSelectOption value="Female">Female</IonSelectOption>
+                  <IonSelectOption value="Other">Other</IonSelectOption>
+                </IonSelect>
+              </IonItem>
+            </IonCol>
+
+            <IonCol>
+              <IonItem>
+                <IonLabel color="tertiary" position="stacked">
+                  Age group
+                </IonLabel>
+                <IonSelect
+                  name="age"
+                  interface="popover"
+                  onIonChange={formik.handleChange}
+                >
+                  <IonSelectOption value="None">None</IonSelectOption>
+                  <IonSelectOption value="19-24">19-24</IonSelectOption>
+                  <IonSelectOption value="25-34">25-34</IonSelectOption>
+                  <IonSelectOption value="35-44">35-44</IonSelectOption>
+                  <IonSelectOption value="45-54">45-54</IonSelectOption>
+                  <IonSelectOption value="55-64">55-64</IonSelectOption>
+                  <IonSelectOption value="65-120">65-120</IonSelectOption>
+                </IonSelect>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol size="12">
+              <IonItem>
+                <IonLabel color="tertiary" position="stacked">
+                  Height
+                </IonLabel>
+                <IonRange
+                  min={0.6}
+                  max={2.3}
+                  step={0.01}
+                  name="height"
+                  value={formik.values.height}
+                  onIonChange={formik.handleChange}
+                  isInvalid={!!formik.errors.height}
+                >
+                  <IonBadge className="info-bage" slot="start">
+                    {formik.values.height.toFixed(2)}
+                  </IonBadge>
+                  <IonIcon
+                    onClick={() => addHeight(-0.01)}
+                    color="tertiary"
+                    size="small"
+                    slot="start"
+                    icon={manOutline}
                   />
-               </Form.Group>
-               <Form.Group as={Col} md="3">
-                  <Form.Control
-                     style={{ marginTop: "20px" }}
-                     type="text"
-                     name="height"
-                     value={formik.values.height}
-                     onChange={formik.handleChange}
-                     isValid={formik.touched.height && !formik.errors.height}
+                  <IonIcon
+                    onClick={() => addHeight(0.01)}
+                    color="tertiary"
+                    size="large"
+                    slot="end"
+                    icon={manOutline}
                   />
-               </Form.Group>
-            </Row>
-            <Row md={12} className="p-2 border bg-light">
-               <Form.Group as={Col} md="9">
-                  <Form.Label>Weight</Form.Label>
-                  <Form.Control
-                     className="form-range"
-                     min="1"
-                     max="250"
-                     step="0.1"
-                     type="range"
-                     placeholder="Weight"
-                     name="weight"
-                     value={formik.values.weight}
-                     onChange={formik.handleChange}
-                     isInvalid={!!formik.errors.weight}
+                </IonRange>
+              </IonItem>
+            </IonCol>
+            <IonCol size="2"></IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol size="12">
+              <IonItem>
+                <IonLabel color="tertiary" position="stacked">
+                  Weight
+                </IonLabel>
+                <IonRange
+                  min="25"
+                  max="200"
+                  step="0.1"
+                  name="weight"
+                  value={formik.values.weight}
+                  onIonChange={formik.handleChange}
+                  isInvalid={!!formik.errors.weight}
+                >
+                  <IonBadge className="info-bage" slot="start">
+                    {formik.values.weight.toFixed(1)}
+                  </IonBadge>
+                  <IonIcon
+                    onClick={decWeight}
+                    color="tertiary"
+                    size="small"
+                    slot="start"
+                    icon={barbellOutline}
                   />
-               </Form.Group>
-               <Form.Group as={Col} md="3">
-                  <Form.Control
-                     style={{ marginTop: "20px" }}
-                     type="number"
-                     name="weight"
-                     value={formik.values.weight}
-                     onChange={formik.handleChange}
-                     isValid={formik.touched.weight && !formik.errors.weight}
+                  <IonIcon
+                    onClick={incWeight}
+                    color="tertiary"
+                    size="large"
+                    slot="end"
+                    icon={barbellOutline}
                   />
-               </Form.Group>
-            </Row>
-            <Row md={12} className="p-3 border bg-primary">
-               <Col>
-                  <h2 style={{ marginTop: "0.1em" }}>
-                     <Badge id="bmiIndicator" className="border" style={{ backgroundColor: data.bmiColor }}>
-                        BMI = {data.BMI}
-                     </Badge>
-                  </h2>
-                  <label for="bmiIndicator"> {data.bmiMessage}</label>
-               </Col>
-               <Col></Col>
-               <Col>
-                  <Button
-                     onClick={addBmi}
-                     style={{
-                        contentAlign: "center",
-                        width: "100%",
-                        marginTop: "0.5em",
-                     }}
-                  >
-                     Log data
-                  </Button>
-               </Col>
-            </Row>
-         </Form>
-         {/* <ReactJson src={data} /> */}
-         <div style={{ paddingTop: "23px" }}>
-            {bmiData?.OK &&
-               <BmiTable data={bmiData.data} rowClick={rowClick} />
-            }
-         </div>
-      </>
-   );
+                </IonRange>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol size="6">
+              <div
+                className="BMI-number"
+                style={{ backgroundColor: data.bmiColor }}
+              >
+                BMI = {data.BMI}
+              </div>
+            </IonCol>
+            <IonCol>
+              <div
+                className="BMI-text"
+                style={{ backgroundColor: data.bmiColor }}
+              >
+                {data.bmiMessage}
+              </div>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol size="6">
+              <IonItem>
+                <IonIcon
+                  size="small"
+                  color="tertiary"
+                  slot="end"
+                  icon={calendarOutline}
+                />
+                <IonLabel color="tertiary" position="stacked">
+                  Date
+                </IonLabel>
+                <IonDatetime
+                  name="ms_date_time"
+                  displayFormat={tsFormat}
+                  displayTimezone={authData.data.timezone}
+                  value={formik.values.ms_date_time}
+                  onIonChange={dateChangeHandler}
+                  isInvalid={!!formik.errors.ms_date_time}
+                />
+              </IonItem>
+            </IonCol>
+
+            <IonCol>
+              <IonButton
+                onClick={addBmi}
+                style={{
+                  contentAlign: "center",
+                  width: "100%",
+                  marginTop: "0.5em",
+                }}
+              >
+                Log data
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </form>
+      </IonCard>
+      {/* <ReactJson src={data} /> */}
+      <div style={{ paddingTop: "23px" }}>
+        {bmiData?.OK && (
+          <IonCard>
+            <BmiTable data={bmiData.data} rowClick={rowClick} />
+          </IonCard>
+        )}
+      </div>
+    </div>
+  );
 }
-
-const Home = () => {
-   return (
-      <Container>
-         <Forma  />
-      </Container>
-   );
-};
 
 export default Home;
