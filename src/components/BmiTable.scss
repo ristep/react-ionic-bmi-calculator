@@ -15,16 +15,22 @@ table.bmiTable {
   tbody td {
     font-size: 14px;
   }
+
   tr:nth-child(even) {
     background: var(--ion-color-light-tint, #d0e4f5);
+  }
+
+  tr:hover {
+    color:var( --ion-color-medium-contrast,#ffffff);
+    background: var(--ion-color-medium-tint, #9b9ea1);
   }
 
   thead {
     height: 1.2em;
     background: var(--ion-color-primary, #3aa2fd);
     border-bottom: 5px solid var( --ion-color-medium-contrast, --ion-color-dark-contrast, #ffffff);
-    //background: linear-gradient(to bottom, var(--ion-color-medium-contrast 0%), var(--ion-color-medium-contrast 66%), var(--ion-color-medium-contrast 100%));
   }
+  
   thead th {
     font-size: 17px;
     font-weight: bold;
@@ -37,13 +43,15 @@ table.bmiTable {
   }
 
   tfoot {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     color: var(--ion-color-dark-shade, #333333);
     background: var(--ion-color-light-tint, #d0e4f5);
     border-top: 3px solid var( --ion-color-dark, #444444);
   }
+
   tfoot td {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
+

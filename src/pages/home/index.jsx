@@ -1,24 +1,11 @@
 import "../pages.scss";
-import React, { useState, useEffect } from "react";
-import { FormikConsumer, useFormik } from "formik";
-import  moment  from "moment";
+import { useState, useEffect } from "react";
+import { useFormik } from "formik";
+import moment from "moment";
 import * as yup from "yup";
-import {
-  IonItem,
-  IonLabel,
-  IonButton,
-  IonCard,
-  IonRow,
-  IonCol,
-  IonDatetime,
-  IonSelect,
-  IonBadge,
-  IonSelectOption,
-  IonRange,
-  IonIcon,
-} from "@ionic/react";
+import { IonItem, IonLabel, IonButton, IonCard, IonRow, IonCol, IonDatetime, IonSelect, IonBadge, IonSelectOption, IonRange, IonIcon } from "@ionic/react";
 
-import { useBmiHistory } from "hooks/useBmiHistory";
+import { useAddBmiHistory, useBmiHistory } from "hooks/useBmiHistory";
 import { useAuthData } from "hooks/authData";
 import BmiTable from "components/BmiTable";
 import Spinner from "components/spinner";
@@ -101,12 +88,9 @@ const schema = yup.object().shape({
 function Home() {
   const { authData } = useAuthData();
   const [data, setData] = useState(initialValues);
-  const {
-    data: bmiData,
-    addBmiHistory,
-    isAdding,
-    isLoading,
-  } = useBmiHistory({ userID: authData.data.id });
+
+  const { data: bmiData, isLoading } = useBmiHistory({ userID: authData.data.id })
+  const { addBmiHistory, isLoading: isAdding } = useAddBmiHistory();
 
   const formik = useFormik({
     validationSchema: schema,
@@ -117,7 +101,6 @@ function Home() {
   });
 
   const addBmi = () => {
-    console.log({ user_id: authData.data.id, ...data }  );  // eslint-disable-line
     addBmiHistory({ user_id: authData.data.id, ...data });
   };
 
@@ -156,8 +139,7 @@ function Home() {
 
   return (
     <div id="home-card">
-      {(isLoading || isAdding) && <Spinner />}
-
+      {(isAdding || isLoading) && <Spinner />}
       <IonCard>
         <form>
           <IonRow className="p-2 border bg-light">
@@ -167,6 +149,7 @@ function Home() {
                   Gender
                 </IonLabel>
                 <IonSelect
+                  name='gender'
                   value={formik.values.gender}
                   interface="popover"
                   onIonChange={formik.handleChange}
@@ -186,6 +169,7 @@ function Home() {
                 <IonSelect
                   name="age"
                   interface="popover"
+                  value={formik.values.age}
                   onIonChange={formik.handleChange}
                 >
                   <IonSelectOption value="None">None</IonSelectOption>

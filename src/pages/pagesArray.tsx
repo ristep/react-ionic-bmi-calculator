@@ -4,6 +4,7 @@ import About from './about';
 import Favorites from './Favorites';
 import Home from './home';
 import LoginForm from './loginForm';
+import RegisterUser from './RegisterUser';
 
 interface AppPage {
   url: string;
@@ -34,6 +35,13 @@ export const pagesArray: AppPage[] = [
     iosIcon: heartOutline,
     mdIcon: heartSharp,
     component: <Favorites />
+  },
+  {
+    title: 'Register',
+    url: '/Register',
+    iosIcon: heartOutline,
+    mdIcon: heartSharp,
+    component: <RegisterUser />
   },
   {
     title: 'Login',

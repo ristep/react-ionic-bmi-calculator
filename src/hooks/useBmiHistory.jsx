@@ -8,7 +8,7 @@ const bmiGetHistoryQuery = (par) => {
       key: {
         user_id: par,
       },
-      sort:[ "ms_date_time DESC" ],
+      sort: ["ms_date_time DESC"],
       attributes: [
         "id",
         "user_id",
@@ -41,42 +41,53 @@ const bmiAddHistoryQuery = (prm) => {
 };
 
 const bmiRemoveHistoryQuery = (prm) => {
-  const { id } = prm;
+  // const { record_id } = prm;
   return {
     Delete: {
       type: "bmi_log",
-      id: id,
+      id: prm,
     },
   };
 };
 
 export const useBmiHistory = (props) => {
-  const queryClient = useQueryClient()
   const { userID } = props;
-  
-  const { isLoading, isError, data, error } = useQuery
-    (['bmiGetHistoryQuery',{userID}], () => 
-    Axios.post("", bmiGetHistoryQuery(userID)).then( ret => ret.data )
+
+  const { isLoading, isError, data, isSuccess } = useQuery(['bmiGetHistoryQuery', { userID }], () =>
+    Axios.post("", bmiGetHistoryQuery(userID)).then(ret => ret.data)
   );
 
-  const invalidateBmiHistory = () =>
-    queryClient.invalidateQueries('bmiGetHistoryQuery');
- 
-  const { mutate:addBmiHistory, isLoading:isAdding, isError:isAddError, isSuccess:issAddSuccess } = useMutation(  
-      (newBmi) => Axios.post( "", bmiAddHistoryQuery(newBmi) ),
-        { onSuccess: () => queryClient.invalidateQueries('bmiGetHistoryQuery') } 
-      ); 
-  
-  const { mutate:removeBmiItem, isLoading:isRemoving, isError:isRemovingError, isSuccess:isRemovingSuccess } = useMutation(  
+  return {
+    data, isError, isLoading, isSuccess
+  };
+};
+
+export const useRemoveBmiHistoryRecord = () => {
+  const queryClient = useQueryClient();
+  const { mutate: delBmiHistory, isLoading, isError, isSuccess } = useMutation(
       (id) => Axios.post( "", bmiRemoveHistoryQuery(id) ),
         { onSuccess: () =>  queryClient.invalidateQueries('bmiGetHistoryQuery')} 
       ); 
+      
+  return {
+    delBmiHistory,
+    isError, isLoading, isSuccess
+  };
+}
 
-  return { 
-           addBmiHistory, isAddError, issAddSuccess, isAdding,    
-           removeBmiItem, isRemovingError, isRemovingSuccess, isRemoving, 
-           data, isError, isLoading, 
-           error, invalidateBmiHistory 
-        };
-};
+export const useAddBmiHistory = () => {
+  const queryClient = useQueryClient()
+  const { mutate: addBmiHistory, isLoading, isError, isSuccess } = useMutation(
+    (newBmi) =>{ console.log(newBmi); return Axios.post("", bmiAddHistoryQuery(newBmi))},
+    { onSuccess: () => queryClient.invalidateQueries('bmiGetHistoryQuery') }
+  );
+  return {
+    addBmiHistory,
+    isError, isLoading, isSuccess
+  };
+}
 
+export const useInvalidateBmiHistory = () => {
+  const queryClient = useQueryClient()
+  queryClient.invalidateQueries('bmiGetHistoryQuery');
+}

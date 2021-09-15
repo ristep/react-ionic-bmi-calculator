@@ -20,10 +20,6 @@ const useDataModule = (props) => {
   const [ serverError, setServerError ] = useState({});
   const [ metaData, setMetaData ] = useState({});
 
-  useEffect(() => {
-    if (editMode) setFormData(data);
-  }, [editMode]);
-
   const updMutation = useMutation((prm) => {
     console.log(updateQuery(prm));
       Axios.post('', updateQuery(prm) )
@@ -44,6 +40,10 @@ const useDataModule = (props) => {
     setFormData({ ...formData, [name]: value });
     setChangeSet(() => new Set(changeSet.add(name)));
 	};
+
+  useEffect(() => {
+    if(editMode) setFormData(data);
+  }, [editMode, data]);
 
   const submitChanges = () => {
     const lista = [...changeSet].reduce( (obj, itm) => { obj[itm]=formData[itm]; return obj;}, {} );

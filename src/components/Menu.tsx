@@ -1,18 +1,7 @@
-import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonMenu,
-  IonMenuToggle,
-  IonNote,
-  useIonRouter
-} from '@ionic/react';
+import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, useIonRouter} from '@ionic/react';
 import { useLocation } from 'react-router-dom';
 
-import { pagesArray } from '../pages/pagesArray';
+import { pagesArray } from 'pages/pagesArray';
 import './Menu.css';
 
 import { App } from '@capacitor/app';

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   IonInput,
   IonItem,
@@ -117,7 +117,6 @@ const UserCard = ({ userID, logout }) => {
     isFetching,
     formData,
     error,
-    changeList,
   } = useDataModule({
     getDetailQuery: userDetailQuery,
     type,

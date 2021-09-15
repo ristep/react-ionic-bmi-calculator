@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+// import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import * as Yup from "yup";
 import useValiHook from "hooks/formValidation";
-import "../../styles/userForm.scss";
 import useRegisterHook from "hooks/sendRegisterMail";
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCol, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
 
 const RegisterUser = () => {
   const [formData, setFormData] = useState({ email: "", username: "", new_password: "",  new_password_confirm: "" });
@@ -42,23 +42,22 @@ const RegisterUser = () => {
   const Lubry = (props) => {
     return (
       <>
-        <Form.Label className="invalid-feedback">{errors?.[props.field]}</Form.Label>
-        <Form.Label className="valid-feedback">{props.label}</Form.Label>
-        {!errors?.[props.field] && !valids?.[props.field] && (<Form.Label>{props.label}</Form.Label>)}
+        <IonLabel className="invalid-feedback">{errors?.[props.field]}</IonLabel>
+        <IonLabel className="valid-feedback">{props.label}</IonLabel>
+        {!errors?.[props.field] && !valids?.[props.field] && (<IonLabel>{props.label}</IonLabel>)}
       </>
     );
   };
 
   return (
-    <Container id="login-box">
-      <Card>
-        <Card.Header>
+    <div id="login-box">
+      <IonCard>
+        <IonCardHeader>
           <div id="login-box-title">Registration of a new user!</div>
-        </Card.Header>
-        <Card.Body>
-          <Form className="p-2 bg-light" size="sm" autoComplete="off">
-            <Form.Group> 
-              <Form.Control
+        </IonCardHeader>
+          <form className="p-2 bg-light" size="sm" autoComplete="off">
+            <IonItem> 
+              <IonInput
                 id="email"
                 name="email"
                 type="text"
@@ -72,10 +71,10 @@ const RegisterUser = () => {
                 }
               />
               <Lubry field="email" label="Email" />
-            </Form.Group>
+            </IonItem>
 
-            <Form.Group>
-              <Form.Control
+            <IonItem>
+              <IonInput
                 id="username"
                 name="username"
                 autoComplete="off"
@@ -88,12 +87,11 @@ const RegisterUser = () => {
                 className={ errors?.username ? "is-invalid" : (valids?.username ? "is-valid" : "")}
               />
               <Lubry field="username" label="User name" />
-            </Form.Group>
+            </IonItem>
 
-            <Card>
-              <Card.Body>
-                <Form.Group>
-                  <Form.Control
+            <IonCard>
+                <IonItem>
+                  <IonInput
                     name="new_password"
                     id="new_password"
                     autoComplete="new-password"
@@ -106,10 +104,10 @@ const RegisterUser = () => {
                     className={ errors?.new_password ? "is-invalid" : ( valids?.new_password ? "is-valid": "") }
                   />
                   <Lubry field="new_password" label="Password" />
-                </Form.Group>
+                </IonItem>
 
-                <Form.Group>
-                  <Form.Control
+                <IonItem>
+                  <IonInput
                     name="new_password_confirm"
                     id="new_password_confirm"
                     autoComplete="new_password"
@@ -125,32 +123,28 @@ const RegisterUser = () => {
                     field="new_password_confirm"
                     label="Confirm Password"
                   />
-                </Form.Group>
-              </Card.Body>
-            </Card>
-          </Form>
-        </Card.Body>
+                </IonItem>
+            </IonCard>
+          </form>
+        </IonCard>
 
-        <Card.Footer>
-          <Row>
-            <Col className="md-4"></Col>
-            <Col className="md-4">
-              <Button variant="primary" id="sendMail" onClick={sendMailHandler}>
+          <IonRow>
+            <IonCol className="md-4"></IonCol>
+            <IonCol className="md-4">
+              <IonButton variant="primary" id="sendMail" onClick={sendMailHandler}>
                 Send invitation e-mail
-              </Button>
-            </Col>
-            <Col className="md-4">
+              </IonButton>
+            </IonCol>
+            <IonCol className="md-4">
               {/* <Button size="sm" variant="primary" onClick={validate}>
                 validate
             </Button> */}
-            </Col>
-          </Row>
-        </Card.Footer>
-      </Card>
+            </IonCol>
+          </IonRow>
       {/* <ReactJson src={valids} name="valids" />
       <ReactJson src={errors} name="errors" />
       <ReactJson src={formData} name="formData" /> */}
-    </Container>
+    </div>
   );
 };
 

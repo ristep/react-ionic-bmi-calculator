@@ -1,27 +1,15 @@
 // import "../pages.scss";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import useValiHook from "../../hooks/formValidation";
+import useValiHook from "hooks/formValidation";
 
 import * as yup from "yup";
 
-import { useAuthData } from "../../hooks/authData";
-import UserCard from "../../components/UserCard.jsx";
-import {
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonCheckbox,
-  IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonRow,
-  IonCol,
-  IonIcon  
-} from "@ionic/react";
+import { useAuthData } from "hooks/authData";
+import UserCard from "components/UserCard.jsx";
+import { IonInput, IonItem, IonLabel, IonCheckbox, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonRow, IonCol, IonIcon } from "@ionic/react";
 import { eye, eyeOff } from "ionicons/icons";
+import ReactJson from "react-json-view";
 
 let valSchema = yup.object().shape({
   username: yup.string().required(),
@@ -35,10 +23,10 @@ const LoginForm = () => {
   const [okceMalo, setOkceMalo] = useState("password");
   const history = useHistory();
 
-  //const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const logOutHandle = () => {
-    // window.location.reload();
+    //window.location.reload();
     history.go(0);
     clearKey();
   };
@@ -143,6 +131,7 @@ const LoginForm = () => {
                 </IonButton>
               </IonCol>
             </IonRow>
+            <ReactJson src={formData} />
           </IonCardContent>
         </IonCard>
       )}
