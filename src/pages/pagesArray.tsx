@@ -3,7 +3,7 @@ import { heartOutline, heartSharp, homeOutline, homeSharp, informationOutline, i
 import About from './about';
 import Favorites from './Favorites';
 import Home from './home';
-import LoginForm from './loginForm';
+import LoginForm from './loginPage';
 import RegisterUser from './RegisterUser';
 
 interface AppPage {

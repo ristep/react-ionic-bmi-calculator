@@ -1,5 +1,5 @@
 // import "../pages.scss";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import useValiHook from "hooks/formValidation";
 
@@ -17,19 +17,26 @@ let valSchema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ username: undefined, password: undefined });
   const { onBlur, errors } = useValiHook({ valSchema, formData });
   const { authData, getKey, clearKey } = useAuthData();
   const [okceMalo, setOkceMalo] = useState("password");
   const history = useHistory();
+  const passwRef = useRef(null);
 
   // const queryClient = useQueryClient();
 
-  const logOutHandle = () => {
-    //window.location.reload();
-    history.go(0);
-    clearKey();
-  };
+  // useEffect(() => {
+  //   // alert("efe");
+  //   //setFormData({ username: null, password: null });
+  //   // passwRef.current.focus();
+  // }, []);
+
+  // const logOutHandle = () => {
+  //   // window.location.reload();
+  //   history.go(0);
+  //   clearKey();
+  // };
 
   const onChange = (ev) => {
     setFormData({ ...formData, [ev.target.name]: ev.target.value });
@@ -75,7 +82,6 @@ const LoginForm = () => {
                     type="text"
                     value={formData?.username}
                     onIonChange={onChange}
-                    className={errors?.username ? "is-invalid" : ""}
                   />
                 </IonItem>
               </IonCol>
@@ -87,13 +93,14 @@ const LoginForm = () => {
                   <IonLabel position="floating">Password</IonLabel>
                   <IonInput
                     size="12"
+                    ref={passwRef}
                     id="password"
                     name="password"
                     type={okceMalo}
+                    autocomplete="on"
                     value={formData?.password || ""}
                     onIonChange={onChange}
-                    onBlur={onBlur}
-                    className={errors?.password ? "is-invalid" : ""}
+                    // className={errors?.password ? "is-invalid" : ""}
                   />
                 </IonItem>
               </IonCol>
@@ -131,13 +138,13 @@ const LoginForm = () => {
                 </IonButton>
               </IonCol>
             </IonRow>
-            <ReactJson src={formData} />
+            <ReactJson src={ { formdata: formData.password ,reff:passwRef.current?.value }} />
           </IonCardContent>
         </IonCard>
       )}
       {authData.OK && (
         <div id="login-box">
-          <UserCard userID={authData.data.id} logout={logOutHandle} />
+          <UserCard userID={authData.data.id} logout={clearKey} />
         </div>
       )}
     </div>

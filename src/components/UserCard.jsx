@@ -1,16 +1,5 @@
 import { useState } from "react";
-import {
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonRow,
-  IonCol,
-} from "@ionic/react";
+import { IonInput,  IonItem,  IonLabel,  IonButton,  IonCard,  IonCardHeader,  IonCardTitle,  IonCardContent,  IonRow,  IonCol,} from "@ionic/react";
 import Spinner from "components/spinner";
 import useValiHook from "../hooks/formValidation";
 import useDataModule from "../hooks/formdata";
@@ -110,19 +99,8 @@ const Input = ({
 
 const UserCard = ({ userID, logout }) => {
   const [editMode, setEditMode] = useState(false);
-  const {
-    onChange,
-    submitChanges,
-    isSuccess,
-    isFetching,
-    formData,
-    error,
-  } = useDataModule({
-    getDetailQuery: userDetailQuery,
-    type,
-    recordID: userID,
-    editMode: editMode,
-  });
+  const { onChange, submitChanges, isSuccess, isFetching, formData, error } = 
+      useDataModule({ getDetailQuery: userDetailQuery, type, recordID: userID, editMode: editMode });
   const { onBlur, errors } = useValiHook({ valSchema, formData });
 
   const postChanges = (ev) => {
@@ -141,6 +119,7 @@ const UserCard = ({ userID, logout }) => {
       {isFetching && <Spinner />}
       {error && <div>{"An error has occurred: " + error.message}</div>}
       {isSuccess && !error && !isFetching && (
+
         <IonCard>
           <IonCardTitle>
             <IonCardHeader>
@@ -208,6 +187,7 @@ const UserCard = ({ userID, logout }) => {
             )}
           </div>
         </IonCard>
+        
       )}
       {/* <ReactJson name="list" src={[...changeList].map(itm => ( {[itm]:formData[itm]} ) )}/>
       <ReactJson name="FormData" src={formData} /> */}
