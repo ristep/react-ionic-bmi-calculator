@@ -1,0 +1,49 @@
+
+$primary: var(--ion-color-primary, #3aa2fd);
+$frontColor: var( --ion-color-primary-contrast,#ffffff);
+
+@keyframes spinner {
+  0% { transform: rotateZ(0deg); }
+  100% { transform: rotateZ(359deg); }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.loginInput {
+    display: block;
+    padding: 10px 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    transition: border-width 0.2s ease;
+    border-radius: 2px;
+    color: #ccc;
+    
+    &+ .ifa {
+      color: $frontColor;
+      font-size: 1em;
+      position: absolute;
+      margin-top: -2.8em;
+      opacity: 0;
+      z-index: 1000;
+      left: 0;
+      transition: all 0.1s ease-in;
+    }
+    
+    &:focus {
+      &+ .ifa {
+        opacity: 1;
+        left: 30px;
+        transition: all 0.25s ease-out;
+      }
+      outline: none;
+      color: #444;
+      border-color: $primary;
+      border-left-width: 3em;
+    }
+    
+}
+ 
+  
