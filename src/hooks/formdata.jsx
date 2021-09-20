@@ -11,7 +11,8 @@ const updateQuery = (prm) => ({
 });
 
 const useDataModule = (props) => {
-  const { getDetailQuery, type,recordID, editMode } = props;
+  const [editMode, setEditMode] = useState(false);
+  const { getDetailQuery, type,recordID  } = props;
   const  queryClient = useQueryClient();
 
   const [ formData, setFormData ] = useState({});
@@ -27,6 +28,17 @@ const useDataModule = (props) => {
         .catch( err => setServerError(err) )        
   });  
   
+  const enterEditMode = () => {
+    setChangeSet(() => new Set());
+    setEditMode(true);
+  };
+  
+  const exitEditMode = () => {
+    setChangeSet(() => new Set());
+    setFormData({...data});
+    setEditMode(false);
+  };
+
   const { isLoading, isSuccess, isFetching, error, data={} } = useQuery(['getDetailQuery'+type, { recordID }],
     () => Axios.post("", getDetailQuery(recordID))
       .then((ret) => { 
@@ -42,8 +54,8 @@ const useDataModule = (props) => {
 	};
 
   useEffect(() => {
-    if(editMode) setFormData(data);
-  }, [editMode, data]);
+    setFormData(data);
+  }, []);
 
   const submitChanges = () => {
     const lista = [...changeSet].reduce( (obj, itm) => { obj[itm]=formData[itm]; return obj;}, {} );
@@ -51,12 +63,13 @@ const useDataModule = (props) => {
       onSuccess: () => {
         setChangeSet(() => new Set());
         queryClient.invalidateQueries(['getDetailQuery'+type, { recordID }]);
+        setEditMode(false);
       },
       onFailure: (err) => setServerError(err)
     })
   };
 
-  return ({onChange, submitChanges, isLoading, isSuccess, isFetching, error, formData, serverError, metaData, changeList: changeSet });
+  return ({onChange, submitChanges, isLoading, isSuccess, isFetching, error, formData, serverError, metaData, changeSet, editMode, exitEditMode, enterEditMode});
 };
 
 export default useDataModule;

@@ -1,42 +1,20 @@
 // import "../pages.scss";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import useValiHook from "hooks/formValidation";
-
-import * as yup from "yup";
 
 import { useAuthData } from "hooks/authData";
 import UserCard from "components/UserCard.jsx";
-import { IonInput, IonItem, IonLabel, IonCheckbox, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonRow, IonCol, IonIcon } from "@ionic/react";
+import { IonItem, IonLabel, IonCheckbox, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonRow, IonCol, IonIcon } from "@ionic/react";
 import { eye, eyeOff } from "ionicons/icons";
-import ReactJson from "react-json-view";
+import { FaUser, FaEyeSlash, FaEye } from "react-icons/fa";
 
-let valSchema = yup.object().shape({
-  username: yup.string().required(),
-  password: yup.string().required(),
-});
+import "./login.scss";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ username: undefined, password: undefined });
-  const { onBlur, errors } = useValiHook({ valSchema, formData });
   const { authData, getKey, clearKey } = useAuthData();
   const [okceMalo, setOkceMalo] = useState("password");
   const history = useHistory();
-  const passwRef = useRef(null);
-
-  // const queryClient = useQueryClient();
-
-  // useEffect(() => {
-  //   // alert("efe");
-  //   //setFormData({ username: null, password: null });
-  //   // passwRef.current.focus();
-  // }, []);
-
-  // const logOutHandle = () => {
-  //   // window.location.reload();
-  //   history.go(0);
-  //   clearKey();
-  // };
 
   const onChange = (ev) => {
     setFormData({ ...formData, [ev.target.name]: ev.target.value });
@@ -53,12 +31,7 @@ const LoginForm = () => {
                   <label id="login-box-title">User login</label>
                 </IonCol>
                 <IonCol size={2}>
-                  <div
-                    id="loginBoxOkceButton"  
-                    onClick={() =>
-                      setOkceMalo(okceMalo === "text" ? "password" : "text")
-                    }
-                  >
+                  <div id="loginBoxOkceButton" onClick={() => setOkceMalo(okceMalo === "text" ? "password" : "text")} >
                     <IonIcon
                       slot="icon-only"
                       color="tertiary"
@@ -71,54 +44,45 @@ const LoginForm = () => {
             </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">Username</IonLabel>
-                  <IonInput
-                    size="sm"
-                    id="username"
-                    name="username"
-                    type="text"
-                    value={formData?.username}
-                    onIonChange={onChange}
-                  />
-                </IonItem>
-              </IonCol>
-            </IonRow>
 
-            <IonRow>
-              <IonCol size={12}>
-                <IonItem>
-                  <IonLabel position="floating">Password</IonLabel>
-                  <IonInput
-                    size="12"
-                    ref={passwRef}
-                    id="password"
-                    name="password"
-                    type={okceMalo}
-                    autocomplete="on"
-                    value={formData?.password || ""}
-                    onIonChange={onChange}
-                    // className={errors?.password ? "is-invalid" : ""}
-                  />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem lines="none">
-                  <IonLabel>Remember me</IonLabel>
-                  <IonCheckbox defaultChecked={true} slot="start" />
-                </IonItem>
+            <IonLabel position="floating">Username</IonLabel>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              placeholder="Username"
+              value={formData?.username}
+              onChange={onChange}
+              autofocus
+              className="loginInput"
+            />
+            <FaUser className="ifa" />
 
-                {authData.error && (
-                  <div className="alert alert-danger" role="alert">
-                    {authData.message}
-                  </div>
-                )}
-              </IonCol>
-            </IonRow>
+            <IonLabel position="floating">Password</IonLabel>
+            <input
+              id="password"
+              name="password"
+              placeholder="Password"
+              type={okceMalo}
+              autocomplete="on"
+              value={formData?.password || ""}
+              onChange={onChange}
+              className="loginInput"
+            />
+            <span className="ifa">
+              {okceMalo === "text" ? <FaEye /> : <FaEyeSlash />}
+            </span>
+
+            <IonItem lines="none">
+              <IonLabel>Remember me</IonLabel>
+              <IonCheckbox defaultChecked={true} slot="start" />
+            </IonItem>
+
+            {authData.error && (
+              <div className="alert alert-danger" role="alert">
+                {authData.message}
+              </div>
+            )}
             <IonRow>
               <IonCol>
                 <IonButton
@@ -138,7 +102,7 @@ const LoginForm = () => {
                 </IonButton>
               </IonCol>
             </IonRow>
-            <ReactJson src={ { formdata: formData.password ,reff:passwRef.current?.value }} />
+            {/* <ReactJson src={{ formData_password: formData.password }} /> */}
           </IonCardContent>
         </IonCard>
       )}

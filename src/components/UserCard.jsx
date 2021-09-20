@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IonInput,  IonItem,  IonLabel,  IonButton,  IonCard,  IonCardHeader,  IonCardTitle,  IonCardContent,  IonRow,  IonCol,} from "@ionic/react";
 import Spinner from "components/spinner";
 import useValiHook from "../hooks/formValidation";
@@ -98,17 +97,9 @@ const Input = ({
 };
 
 const UserCard = ({ userID, logout }) => {
-  const [editMode, setEditMode] = useState(false);
-  const { onChange, submitChanges, isSuccess, isFetching, formData, error } = 
-      useDataModule({ getDetailQuery: userDetailQuery, type, recordID: userID, editMode: editMode });
+  const { onChange, submitChanges, isSuccess, isFetching, formData, error, changeSet, enterEditMode, exitEditMode, editMode } = 
+      useDataModule({ getDetailQuery: userDetailQuery, type, recordID: userID });
   const { onBlur, errors } = useValiHook({ valSchema, formData });
-
-  const postChanges = (ev) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    submitChanges();
-    setEditMode(false);
-  };
 
   const changeHandler = (e) => {
     onChange(e.target.name, e.target.value);
@@ -149,7 +140,7 @@ const UserCard = ({ userID, logout }) => {
               <IonRow>
                 <IonCol>
                   <IonButton
-                    onClick={() => setEditMode(true)}
+                    onClick={enterEditMode}
                     className={"dialog-btn"}
                     color="primary"
                   >
@@ -171,7 +162,7 @@ const UserCard = ({ userID, logout }) => {
               <IonRow>
                 <IonCol>
                   <IonButton
-                    onClick={() => setEditMode(false)}
+                    onClick={exitEditMode}
                     className={"dialog-btn"}
                     color="light"
                   >
@@ -179,7 +170,7 @@ const UserCard = ({ userID, logout }) => {
                   </IonButton>
                 </IonCol>
                 <IonCol>
-                  <IonButton onClick={postChanges} className={"dialog-btn"}>
+                  <IonButton onClick={submitChanges} className={"dialog-btn"} disabled={changeSet.size<1}>
                     Submit changes
                   </IonButton>
                 </IonCol>
@@ -189,8 +180,7 @@ const UserCard = ({ userID, logout }) => {
         </IonCard>
         
       )}
-      {/* <ReactJson name="list" src={[...changeList].map(itm => ( {[itm]:formData[itm]} ) )}/>
-      <ReactJson name="FormData" src={formData} /> */}
+      {/* <ReactJson name="list" src={[...changeSet]}/> */}
       {/* just for demo && debug */}
     </div>
   );
