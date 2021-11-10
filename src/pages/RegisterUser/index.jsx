@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 // import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import * as Yup from "yup";
+
 import useValiHook from "hooks/formValidation";
 import useRegisterHook from "hooks/sendRegisterMail";
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCol, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCol, IonInput, IonItem, IonItemDivider, IonLabel, IonRow } from "@ionic/react";
 
 const RegisterUser = () => {
   const [formData, setFormData] = useState({ email: "", username: "", new_password: "", new_password_confirm: "" });
-  const { sendRegisterMail, sended } = useRegisterHook({ email: formData.email, username: formData.username, password: formData.new_pasword, clientURL: window.location.href });
+  const { sendRegisterMail, sent } = useRegisterHook({ email: formData.email, username: formData.username, password: formData.new_pasword, clientURL: window.location.href });
   const valNewUserSchema = Yup.object().shape({
     email: Yup.string()
       .required("E-mail is required!")
@@ -31,10 +32,10 @@ const RegisterUser = () => {
     validate(); /// validate again to check if all fields are filled
     if (Object.keys(errors).length === 0) {
       sendRegisterMail();
-      if (sended) {
-        alert("e-mail has been sended to:" + formData.email);
+      if (sent) {
+        alert("e-mail has been sent to your eaddres:" + formData.email);
       } else {
-        alert("e-mail has not been sended");
+        alert("e-mail hasn't been sent to your eaddres:" + formData.email);
       }
     }
   };
@@ -70,17 +71,17 @@ const RegisterUser = () => {
   return (
     <div id="login-box">
       <IonCard>
-        <IonCardHeader>
-          <div id="login-box-title">Registration of a new user!</div>
+        <IonCardHeader className="loginBoxTitle">
+          Registration of a new user!
         </IonCardHeader>
         <form className="ion-padding">
           <IonItem>
+            <IonLabel position="floating">E-mail</IonLabel>
             <IonInput
               id="email"
               name="email"
               type="text"
               size="sm"
-              placeholder="Enter your email"
               value={formData?.email}
               onIonChange={onChange}
               onBlur={onBlur}
@@ -92,13 +93,13 @@ const RegisterUser = () => {
           </IonItem>
 
           <IonItem>
+            <IonLabel position="floating">User name</IonLabel>
             <IonInput
               id="username"
               name="username"
               autoComplete="off"
               size="sm"
               type="text"
-              placeholder="User name"
               value={formData?.username}
               onIonChange={onChange}
               onBlur={onBlur}
@@ -107,15 +108,15 @@ const RegisterUser = () => {
             <Lubry field="username" label="User name" />
           </IonItem>
 
-          <IonCard>
+            <IonItemDivider />  
             <IonItem>
+              <IonLabel position="floating">Password</IonLabel>
               <IonInput
                 name="new_password"
                 id="new_password"
                 autoComplete="new-password"
                 size="sm"
                 type="password"
-                placeholder="Password"
                 value={formData.new_password}
                 onIonChange={onChange}
                 onBlur={onBlur}
@@ -125,13 +126,13 @@ const RegisterUser = () => {
             </IonItem>
 
             <IonItem>
+              <IonLabel position="floating">Confirm Password</IonLabel>
               <IonInput
                 name="new_password_confirm"
                 id="new_password_confirm"
                 autoComplete="new_password"
                 size="sm"
                 type="password"
-                placeholder="Confirm Password"
                 value={formData.new_password_confirm}
                 onIonChange={onChange}
                 onBlur={onBlur}
@@ -142,19 +143,18 @@ const RegisterUser = () => {
                 label="Confirm Password"
               />
             </IonItem>
-          </IonCard>
         </form>
 
         <IonRow>
           <IonCol className="md-4"></IonCol>
           <IonCol className="md-4">
             <IonButton variant="primary" id="sendMail" onClick={sendMailHandler}>
-              Send invitation e-mail
+              Send me confirmation e-mail
             </IonButton>
           </IonCol>
           <IonCol className="md-4">
             <IonButton size="sm" variant="primary" onClick={validate}>
-              validate
+              Submit
             </IonButton>
           </IonCol>
         </IonRow>

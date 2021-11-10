@@ -2,7 +2,7 @@ import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu
 import { useLocation } from 'react-router-dom';
 
 import { pagesArray } from 'pages/pagesArray';
-import './Menu.css';
+// import './Menu.css';
 
 import { App } from '@capacitor/app';
 

@@ -1,0 +1,15 @@
+@import "theme/variables04.scss";
+@import "theme/ion-menu.scss";
+
+/*  side menu max-width */
+.split-pane-visible > ion-menu {
+  max-width: 280px!important;
+}
+
+.loginBoxTitle {
+  padding: 20px 0 0 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+  

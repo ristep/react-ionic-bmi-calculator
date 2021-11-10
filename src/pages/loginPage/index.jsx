@@ -100,6 +100,9 @@ const LoginForm = () => {
                 >
                   Register
                 </IonButton>
+                {/* <IonButton onClick={() => {navigator.clipboard.writeText("Rabote be daa!!")}}>
+                  click
+                </IonButton> */}
               </IonCol>
             </IonRow>
             {/* <ReactJson src={{ formData_password: formData.password }} /> */}
