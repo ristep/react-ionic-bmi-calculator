@@ -13,7 +13,7 @@ const DelAlertInit = {
   show: false,
   record_id: null,
   title: "Atention!",
-  body: "Confirm deleting!",
+  body: "Confirm the deletion!",
   callback: () => {},
   buttons: [
     { text: "Cancel", color: "light", value: false },

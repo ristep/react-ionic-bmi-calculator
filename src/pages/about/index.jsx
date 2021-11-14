@@ -7,7 +7,7 @@ import { useBmiHistory } from "../../hooks/useBmiHistory";
 
 const About = (props) => {
   const { authData } = useAuthData();
-  const { data:bmiData } = useBmiHistory({userID: authData.data.id}); 
+  const { data:bmiData } = useBmiHistory( authData.data.id ); 
 
   // const Alert = usePsAlert({
   //   title:<h3>Important!</h3>,

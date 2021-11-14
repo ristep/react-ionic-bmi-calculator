@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import Axios from "../Axios";
+import createPersistedState from 'use-persisted-state';
 
 const initauthData = { OK: false, error: false, data:{ name:"Nikoj"} };
 
@@ -10,9 +11,11 @@ const getUserTokenQuery = (username, password) => ({
   },
 });
 
-const useUserLoginData = () => {
-  const [authData, setAuthData] = useState(initauthData);
+const useUserState = createPersistedState('UserDataKey');
 
+const useUserLoginData = () => {
+  // const [authData, setAuthData] = useState(initauthData);
+  const [authData, setAuthData] = useUserState(initauthData);
   const clearKey   = () => {
     setAuthData(initauthData);
   };

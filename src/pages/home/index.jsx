@@ -89,7 +89,7 @@ function Home() {
   const { authData } = useAuthData();
   const [data, setData] = useState(initialValues);
 
-  const { data: bmiData, isLoading } = useBmiHistory({ userID: authData.data.id })
+  const { data: bmiData, isLoading } = useBmiHistory(authData.data.id);
   const { addBmiHistory, isLoading: isAdding } = useAddBmiHistory();
 
   const formik = useFormik({

@@ -50,10 +50,10 @@ const bmiRemoveHistoryQuery = (prm) => {
   };
 };
 
-export const useBmiHistory = (props) => {
-  const { userID } = props;
+export const useBmiHistory = (userID) => {
+  // const { userID } = props;
 
-  const { isLoading, isError, data, isSuccess } = useQuery(['bmiGetHistoryQuery', { userID }], () =>
+  const { isLoading, isError, data, isSuccess } = useQuery(['bmiGetHistoryQuery',  userID ], () =>
     Axios.post("", bmiGetHistoryQuery(userID)).then(ret => ret.data)
   );
 
