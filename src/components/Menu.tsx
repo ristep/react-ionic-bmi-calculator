@@ -6,7 +6,7 @@ import { pagesArray } from 'pages/pagesArray';
 
 import { App } from '@capacitor/app';
 
-const Menu: React.FC = () => {
+const Menu = () => {
   const location = useLocation();
 
   const ionRouter = useIonRouter();

@@ -1,6 +1,7 @@
 import "./BmiTable.scss";
+// import "./BmiTable2.scss"
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Spinner from "components/spinner";
 import { useAuthData } from "hooks/authData";
 import { useTable } from "react-table";
